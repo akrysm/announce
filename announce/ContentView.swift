@@ -92,6 +92,20 @@ struct ContentView: View {
                     .background(Color.blue.opacity(0.1))
                     .cornerRadius(15)
                     
+                    // 再生／停止ボタン（ミュートの直前に追加）
+                    Button {
+                        toggleSchedule()
+                    } label: {
+                        HStack {
+                            Image(systemName: isRunning ? "stop.circle.fill" : "play.circle.fill")
+                                .font(.title)
+                            Text(isRunning ? "再生中（停止する）" : "停止中（再生する）")
+                                .font(.headline.bold())
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(isRunning ? .red : .green)
+                    
                     // ミュート
                     HStack {
                         Image(systemName: isMuted ? "speaker.slash.fill" : "speaker.wave.3.fill")
@@ -111,7 +125,36 @@ struct ContentView: View {
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(12)
                     
+                    // ミュートの下あたりに追加する例
+                    VStack(spacing: 12) {
+
+                        // 1段目：デモ1〜3
+                        HStack {
+                            Button("🗓️ 1") {
+                                demoMode = .demo1
+                                schedule = demoSchedule1()
+                            }
+                            Button("🗓️ 2") {
+                                demoMode = .demo2
+                                schedule = demoSchedule2()
+                            }
+                            Button("🗓️ 3") {
+                                demoMode = .demo3
+                                schedule = demoSchedule3()
+                            }
+                        }
+
+//                        // 2段目：再生／停止
+//                        Button(isRunning ? "⏹️ 停止する（再生中）": "▶️ 再生する（停止中）" ) {
+//                            toggleSchedule()
+//                        }
+//                        .buttonStyle(.borderedProminent)
+                    }
+                    .padding()
+                    
                     // 現在のデモ種別
+                    Divider()
+                        .padding(.vertical, 4)
                     HStack {
                         Text({
                             switch demoMode {
@@ -133,11 +176,11 @@ struct ContentView: View {
                     // デモ種別表示のすぐ下あたりに追加（任意）
                     Divider()
                         .padding(.vertical, 4)
-                    Text("スケジュール一覧")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
+//                    Text("スケジュール一覧")
+//                        .font(.subheadline.weight(.semibold))
+//                        .foregroundColor(.secondary)
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+//                        .padding(.horizontal)
 
                     // 下半分にスケジュールを縦スクロール表示
                     VStack(alignment: .leading, spacing: 8) {
@@ -172,31 +215,33 @@ struct ContentView: View {
                             }
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color.secondary.opacity(0.05))
                     .cornerRadius(12)
                 }
+                .frame(maxWidth: .infinity)   // ★追加
                 .padding()
             }
             .navigationTitle("announce")
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button("🧪 デモ1") {
-                        demoMode = .demo1
-                        schedule = demoSchedule1()
-                    }
-                    Button("🧪 デモ2") {
-                        demoMode = .demo2
-                        schedule = demoSchedule2()
-                    }
-                    Button("🧪 デモ3") {
-                        demoMode = .demo3
-                        schedule = demoSchedule3()
-                    }
-                    Button(isRunning ? "⏹️ 停止" : "▶️ 開始") {
-                        toggleSchedule()
-                    }
-                }
-            }
+//            .toolbar {
+//                ToolbarItemGroup(placement: .bottomBar) {
+//                    Button("🧪 デモ1") {
+//                        demoMode = .demo1
+//                        schedule = demoSchedule1()
+//                    }
+//                    Button("🧪 デモ2") {
+//                        demoMode = .demo2
+//                        schedule = demoSchedule2()
+//                    }
+//                    Button("🧪 デモ3") {
+//                        demoMode = .demo3
+//                        schedule = demoSchedule3()
+//                    }
+//                    Button(isRunning ? "⏹️ 停止" : "▶️ 開始") {
+//                        toggleSchedule()
+//                    }
+//                }
+//            }
             .onReceive(timer) { _ in
                 currentTime = Date()
                 if isRunning { updateSchedule() }
