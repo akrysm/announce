@@ -5,6 +5,9 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
+		<string>processing</string>
+		<string>fetch</string>
+		<string>bluetooth-peripheral</string>
 	</array>
 </dict>
 </plist>
